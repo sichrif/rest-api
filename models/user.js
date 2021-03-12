@@ -17,8 +17,8 @@ password:{type:String , required:true}
 });
 userSchema.pre('save',async function(next){
 try{
-
-    const passwordHash = await bcrypt.hash(this.password,10);
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(this.password ,salt);
     console.log(passwordHash);
 this.password = passwordHash;
 next();
