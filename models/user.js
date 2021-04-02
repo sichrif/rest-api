@@ -15,8 +15,15 @@ email:{
  
 },
 cin:{type:Number , required:true},
-password:{type:String , required:true},
-
+password:{type:String , required:[true,'please confirmyour password'],
+validator:function(el){
+  return el === this.password;  
+},
+message:'passwords are not the same'
+},
+passwordchangeat:Date,
+passwordresettoken:String,
+passwordresetexpires:Date
 
 });
 userSchema.pre('save',async function(next){
@@ -31,6 +38,9 @@ next();
 }
 });
 
+
+
+
 userSchema.methods.generateAuthToken = function () {
     return jwt.sign({ nom: this.nom, prenom: this.prenom }, SECRET_key);
 }
@@ -44,27 +54,26 @@ userSchema.methods.isPasswordValid = async function(value){
     }
 };
 
-// userSchema.pre('save',  function(next) {
-//     const user = this;
-
-//     if (!user.isModified('password')) return next();
-
-//     bcrypt.genSalt(10, function(err, salt) {
-//         if (err) return next(err);
-
-//         bcrypt.hash(user.password, salt, function(err, hash) {
-//             if (err) return next(err);
-
-//             user.password = hash;
-//             next();
-//         });
-//     });
-// });
 
 
-userSchema.methods.generatePasswordReset = function() {
-    this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
-    this.resetPasswordExpires = Date.now() + 3600000; //expires in an hour
+
+userSchema.methods.createpasswordresettoken = function() {
+   const resettoken =crypto.randomBytes(32).toString('hex');
+   crypto.createHash('sha256').update(resettoken).digest('hex');
+this.passwordresettoken= crypto 
+
+.createHash('sha256')
+.update(resettoken)
+.digest('hex');
+
+console.log({resettoken},this.passwordresettoken);
+
+
+this.passwordresetexpires= Date.now()+10*60*1000;
+
+return resettoken;
+
+
 };
 
 

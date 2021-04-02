@@ -5,6 +5,9 @@ const { MONGODB } = require('./config');
 const userRoutes = require('./routes/user');
 const bodyParser = require('body-parser');
 const bcrypt =require('bcryptjs');
+const AppError= require('./utils/appError')
+
+
 
 
 app.use(bodyParser.json());

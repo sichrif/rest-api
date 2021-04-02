@@ -4,14 +4,16 @@ const jwt = require('jsonwebtoken');
 const {SECRET_KEY}=require('./../config');
 const bcrypt =require('bcrypt');
 const user = require('./../models/user');
-const sgMail = require('@sendgrid/mail');
-const SENDGRID_API_KEY='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'
-sgMail.setApiKey(SENDGRID_API_KEY);
+// const sendEmail=require('./../emails/account');
+const nodemailer = require('nodemailer')
+
 
 
 
 
 exports.register = async (req,res,next)=>{
+  
+   
     const {nom,prenom,email,cin,password}=req.body;
     const user = await User.findOne({email,cin});
     if(user)
@@ -60,81 +62,113 @@ getSignedToken = user => {
 // ===PASSWORD RECOVER AND RESET
 
 
-exports.recover = (req, res) => {
-    User.findOne({email: req.body.email})
-        .then(user => {
-            if (!user) return res.status(401).json({message: 'The email address ' + req.body.email + ' is not associated with any account. Double-check your email address and try again.'});
 
-            let id = '1';
 
-            let baseURL = 'http://localhost:3300/api/users/reset';
-            let link = baseURL + '/' + id;
 
-            // Save the updated user object
+exports.forgotPassword = async(req,res,next)=>{
+//     const user = await User.findOne({email:req.body.email});
+// if (!user){
+//     return ('there is no user with email address.',404);
+// }
 
-                    const mailOptions = {
-                        to: user.email,
-                        from: 'hamzaabda09@gmail.com',
-                        subject: "Password change request",
-                        text: `Hi  \n 
-                    Please click on the following link to reset your password ${link}. \n\n 
-                    If you did not request this, please ignore this email and your password will remain unchanged.\n`,
-                    };
+// const resettoken =user.createpasswordresettoken();
+// await user.save({validateBeforeSave:false})
 
-                    sgMail.send(mailOptions, (error, result) => {
-                        if (error) return res.status(500).json({message: error.message});
+// const resetURL ='${req.protocol}://${req.get(host)}/http://localhost:3300/api/users/forgotPassword/${resetToken}';
 
-                        res.status(200).json({message: 'A reset email has been sent to ' + user.email + '.'});
-                    });
-                })
-                .catch(err => res.status(500).json({message: err.message}));
-     
+// const message='forgot your password? submit a patch request with your new password and passwordConfirm to :${resetURL} ';
+
+// try{
+// await sendEmail({
+//     email:user.email,
+//     subject:'your password reset token(valid for 10 min)',
+//     message
+// });
+// res.status(200).json({
+//     status :'success',
+//     message:'token sent to email'
+//    });
+
+
+// }catch(err){
+//     user.resetPasswordtoken= undefined;
+//     user.resetPasswordexpires=undefined;
+//     await user.save({validateBeforeSave:false});
+
+    
+
+//     }
+
+
+
+    // const mail = {
+    //     senderName: req.body.senderName,
+    //     from: req.body.from,
+    //     subject: req.body.subject,
+    //     text: req.body.text
+    // }
+    send().catch(console.error);
+    res.send('sent!');
+
+
+
 };
 
+async function send() {
+    let transporter = nodemailer.createTransport({
+        host: "smtp-mail.outlook.com",
+        port: 587,
+        secure: false,
+        auth: {
+            user: 'hamzaabda09@outlook.com',
+            pass: 'Azerty123456+',
+        },
+        tls: {
+            ciphers: 'SSLv3'
+        },
+    });
 
-exports.reset = (req, res) => {
-    User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}})
-        .then((user) => {
-            if (!user) return res.status(401).json({message: 'Password reset token is invalid or has expired.'});
-
-            //Redirect user to form with the email address
-            res.render('reset', {user});
-        })
-        .catch(err => res.status(500).json({message: err.message}));
-};
+    let info = await transporter.sendMail({
+        from: 'hamzaabda09@outlook.com',
+        to: 'hamzaabda500@gmail.com',
+        subject: 'test one two three',
+        text: 'test one two three'
+    });
+}
 
 
-// @route POST api/auth/reset
-// @desc Reset Password
-// @access Public
-exports.resetPassword = (req, res) => {
-    User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}})
-        .then((user) => {
-            if (!user) return res.status(401).json({message: 'Password reset token is invalid or has expired.'});
+exports.resetPassword = async (req, res) => {
+   
+    const hashedtoken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+    
+    const user =await User.findOne({passwordresettoken:hashedtoken,passwordresetexpires:{$gt:
+    Date.now()}});
+    
+    if(!user){
+        return next(newAppError('token is invalid or has expired',400))
+    }
+    user.password = req.body.password;
+    user.passwordconfirm = req.body.passwordconfirm;
+    user.passwordresettoken=undefined;
+    user.passwordresetexpires=undefined;
+    await user.save();
+    
+    const token =getSignedToken (user._id);
+    res.status(200).json({
+        status:'succes',
+        token
+    });
+}
+exports.updatePassword = async (req,res,next)=>{
+const user = await User.findById(req.user.id).select('+password')
+if (!(await user.correctPassword(req.body.passwordconfirm,user.password))){
+    return ('your current password is wrong',401);
+}
+user.password = req.bod.password;
+user.passwordconfirm= req.body.passwordconfirm;
 
-            //Set the new password
-            user.password = req.body.password;
-            user.resetPasswordToken = undefined;
-            user.resetPasswordExpires = undefined;
+await user.save();
 
-            // Save
-            user.save((err) => {
-                if (err) return res.status(500).json({message: err.message});
 
-                // send email
-                const mailOptions = {
-                    to: user.email,
-                    from: process.env.FROM_EMAIL,
-                    subject: "Your password has been changed",
-                    text: `Hi ${user.username} \n 
-                    This is a confirmation that the password for your account ${user.email} has just been changed.\n`
-                };
 
-                sgMail.send(mailOptions, (error, result) => {
-                    if (error) return res.status(500).json({message: error.message});
-
-                    res.status(200).json({message: 'Your password has been updated.'});
-                });
-            });
-        });
-};
+}
