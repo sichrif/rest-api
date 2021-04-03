@@ -12,12 +12,12 @@ email:{
     type:String,
     required:true,
     unique:true,
- 
+
 },
 cin:{type:Number , required:true},
-password:{type:String , required:[true,'please confirmyour password'],
+password:{type:String , required:[true,'please confirm your password'],
 validator:function(el){
-  return el === this.password;  
+  return el === this.password;
 },
 message:'passwords are not the same'
 },
@@ -46,7 +46,7 @@ userSchema.methods.generateAuthToken = function () {
 }
 
 userSchema.methods.isPasswordValid = async function(value){
-    
+
     try{
         return await bcrypt.compare(value,this.password);
     } catch(error){
@@ -60,7 +60,7 @@ userSchema.methods.isPasswordValid = async function(value){
 userSchema.methods.createpasswordresettoken = function() {
    const resettoken =crypto.randomBytes(32).toString('hex');
    crypto.createHash('sha256').update(resettoken).digest('hex');
-this.passwordresettoken= crypto 
+this.passwordresettoken= crypto
 
 .createHash('sha256')
 .update(resettoken)

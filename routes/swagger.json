@@ -1,0 +1,116 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This project is created as a graduation project within the enterprise ****** and the higher institute *****",
+    "version": "1.0.0",
+    "title": "REST API",
+    "contact": {
+      "email": "hamza@gmail.com"
+    }
+  },
+  "host": "hamza.com",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "api",
+      "description": "Everything you need to know about the api"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/users/register": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Register a new user",
+        "description": "",
+        "operationId": "addUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to register",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User registered"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "readOnly": true
+        },
+        "nom": {
+          "type": "string",
+          "example": "hamza"
+        },
+        "prenom": {
+          "type": "string",
+          "example": "abda"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "example": "hamza@gmail.com"
+        },
+        "cin": {
+          "type": "number",
+          "description": "doit avoir 8 chiffres",
+          "example": "10454836"
+        },
+        "password": {
+          "type": "string",
+          "format": "password",
+          "example": "9ar9ouch"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
