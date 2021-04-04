@@ -12,9 +12,9 @@ const swaggerDocument = require('./routes/swagger.json')
 
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
-app.use('/api-swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-
+// app.listen(3300)
 mongoose.connect(MONGODB, {useNewUrlParser: true})
     .then(() => {
         console.log('connected to mongodb')
