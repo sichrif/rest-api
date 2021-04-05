@@ -11,8 +11,8 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    const idStatus = mongoose.Types.ObjectId.isValid(req.params.id);
-    if (!idStatus) return res.status(400).send("invalid id.");
+    const id = mongoose.Types.ObjectId.isValid(req.params.id);
+    if (!id) return res.status(400).send("invalid id.");
 
     const admin = await Admin.findById(req.params.id);
     if (!admin) return res.status(404).send("admin not found.");
@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
     admin.password = staff.password = await bcrypt.hash(req.body.password, salt);
 
     await admin.save();
-    await staff.save();
+    
 
     res.send(admin);
 });
@@ -79,8 +79,8 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-    const idStatus = mongoose.Types.ObjectId.isValid(req.params.id);
-    if (!idStatus) return res.status(400).send("invalid id.");
+    const id = mongoose.Types.ObjectId.isValid(req.params.id);
+    if (!id) return res.status(400).send("invalid id.");
 
     let admin = await Admin.findById(req.params.id);
     if (!admin) return res.status(404).send("admin not found.");
