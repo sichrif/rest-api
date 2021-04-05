@@ -126,19 +126,18 @@ exports.resetPassword = async (req, res) => {
     // else return false with 403 status
     // keep the token in the database
 
-    const user =await User.findOne({passwordresettoken:hashedtoken,passwordresetexpires:{$gt:
-    Date.now()}});
-    
+    const user =await User.findOne({passwordresettoken,
+        passwordresetexpires:{$gt:Date.now()}});
     if(!user){
-        return next(newAppError('token is invalid or has expired',400))
+        return next ('invalid token',400);
     }
-    user.password = req.body.password;
-    user.passwordconfirm = req.body.passwordconfirm;
-    user.passwordresettoken=undefined;
-    user.passwordresetexpires=undefined;
-    await user.save();
     
-    const token =getSignedToken (user._id);
+      user.password=req.body.password;
+      user.resetPasswordtoken = undefined;
+      user.passwordresetexpires = undefined ;
+      await user.save();
+
+
     res.status(200).json({
         status:'succes',
         token
