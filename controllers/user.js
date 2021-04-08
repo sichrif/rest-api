@@ -71,6 +71,7 @@ exports.forgotPassword = async(req,res,next)=>{
 if (!user){
     return ('there is no user with email address.',404);
 }
+console.log(user);
 
 const resettoken =user.createpasswordresettoken();
 await user.save({validateBeforeSave:false})
@@ -101,7 +102,7 @@ try {
         text: message
     }); 
 }catch (e) {
-    console.log('error');
+    console.log(e);
 }
 res.send('sent!');
 
@@ -112,54 +113,58 @@ res.send('sent!');
 
 
 exports.resetPassword = async (req, res) => {
-   
-    const hashedtoken = crypto.createHash('sha256').update(req.params.token).digest('hex');
 
-    // check if user exist
-    // check if token exists
-    // check if token haven't expired
+    token = req.params.token;
 
-    // generate new token and save it in the database
-    
-
-    // if token everything valid return true with 200 status
-    // else return false with 403 status
-    // keep the token in the database
-
-    const user =await User.findOne({passwordresettoken,
+    const user =await User.findOne({passwordresettoken:token,
         passwordresetexpires:{$gt:Date.now()}});
     if(!user){
         return next ('invalid token',400);
     }
     
-      user.password=req.body.password;
+    let newPass = makeid(8);
+      user.password=newPass;
       user.resetPasswordtoken = undefined;
       user.passwordresetexpires = undefined ;
       await user.save();
 
-
-    res.status(200).json({
-        status:'succes',
-        token
+      let transporter = nodemailer.createTransport({
+        host: "smtp-mail.outlook.com",
+        port: 587,
+        secure: false,
+        auth: {
+            user: 'hamzaabda09@outlook.com',
+            pass: 'Azerty123456+',
+        },
+        tls: {
+            ciphers: 'SSLv3'
+        },
     });
-}
-exports.updatePassword = async (req,res,next)=>{
-
-
-    // receive the token
-    // validate just in case
-    // get the user by the token
-    // update the password
-
-    const user = await User.findById(req.user.id).select('+password')
-if (!(await user.correctPassword(req.body.passwordconfirm,user.password))){
-    return ('your current password is wrong',401);
-}
-user.password = req.bod.password;
-user.passwordconfirm= req.body.passwordconfirm;
-
-await user.save();
-
-
+    
+    try {
+        
+            let info = await transporter.sendMail({
+            from: 'hamzaabda09@outlook.com',
+            to: user.email,
+            subject: 'Password Reset',
+            text: `Your new Password: ${newPass}`
+        }); 
+    }catch (e) {
+        console.log(e);
+    }
+    res.send('An email with your new password have been sent.');
 
 }
+
+function makeid(length) {
+    var result = [];
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result.push(characters.charAt(Math.floor(Math.random() * 
+ charactersLength)));
+   }
+   return result.join('');
+}
+
+
