@@ -90,7 +90,8 @@ let transporter = nodemailer.createTransport({
         pass: 'Azerty123456+',
     },
     tls: {
-        ciphers: 'SSLv3'
+        ciphers: 'SSLv3',
+        rejectUnauthorized: false
     },
 });
 
@@ -138,7 +139,8 @@ exports.resetPassword = async (req, res, next) => {
             pass: 'Azerty123456+',
         },
         tls: {
-            ciphers: 'SSLv3'
+            ciphers: 'SSLv3',
+            rejectUnauthorized: false
         },
     });
     
