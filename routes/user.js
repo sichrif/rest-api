@@ -8,8 +8,8 @@ router.post('/register', userController.register);
 
 
 router.post('/login', userController.login);
-router.post('/resetPassword/:token', userController.resetPassword);
 router.post('/forgotPassword/', userController.forgotPassword);
+router.get('/resetPassword/:token', userController.resetPassword);
 
 
 module.exports = router;

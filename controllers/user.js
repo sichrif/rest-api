@@ -73,7 +73,8 @@ if (!user){
 }
 console.log(user);
 
-const resettoken =user.createpasswordresettoken();
+const resettoken = user.createpasswordresettoken();
+
 await user.save({validateBeforeSave:false})
 
 const resetURL =`http://localhost:3300/api/users/resetPassword/${resettoken}`;
@@ -112,7 +113,7 @@ res.send('sent!');
 
 
 
-exports.resetPassword = async (req, res) => {
+exports.resetPassword = async (req, res, next) => {
 
     token = req.params.token;
 

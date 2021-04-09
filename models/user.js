@@ -60,20 +60,11 @@ userSchema.methods.isPasswordValid = async function(value){
 userSchema.methods.createpasswordresettoken = function() {
    const resettoken =crypto.randomBytes(32).toString('hex');
    crypto.createHash('sha256').update(resettoken).digest('hex');
-this.passwordresettoken= crypto
-
-.createHash('sha256')
-.update(resettoken)
-.digest('hex');
-
-console.log({resettoken},this.passwordresettoken);
-
-
+this.passwordresettoken= resettoken;
+// was generating pass twice 
 this.passwordresetexpires= Date.now()+ 2 *60 * 60 * 1000;
 
 return resettoken;
-
-
 };
 
 
