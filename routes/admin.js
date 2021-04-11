@@ -5,14 +5,10 @@ const adminController = require('./../controllers/admin');
 
 
 
-// Sign up an Admin
-router.post('/admin', adminController.signUp);
+router.post('/register', adminController.register);
 
-// Sign in Admin
-router.post('/admin/login', adminController.signIn);
 
-// Sign out admin
-router.post('/admin/logout', authAdmin, adminController.signOut);
+router.post('/login', adminController.login);
 
 
 

@@ -28,13 +28,8 @@ const adminSchema = new mongoose.Schema({
         trim : true,
         minlength : 8
     },
-    tokens: [{
-        token: {
-            type: String,
-            required: true
-        }
-    }]
-},{timestamps : true});
+   
+});
 
 // Hash password before saving the admin
 adminSchema.pre('save', async function (next) {
@@ -70,16 +65,7 @@ adminSchema.statics.findByCredentials = async function (email, password) {
     return admin;
 };
 
-// Delete unnecessary (for the admin) fields from the admin object returned to admin
-adminSchema.methods.toJSON = function () {
-    const adminObject = this.toObject();
-    adminObject.id = adminObject._id;
-    delete adminObject._id;
-    delete adminObject.password;
-    delete adminObject.tokens;
-    delete adminObject.__v;
-    return adminObject;
-}
+
 
 const Admin = mongoose.model('Admin',adminSchema);
 module.exports = Admin;
