@@ -1,118 +1,30 @@
-const Admin = require('../models/admin.model.js');
+const Admin = require('../models/admin.js');
 
-// Create and Save a new admin => POST
-exports.create = (req, res) => {
-    // Validate request
-    if(!req.body.username) {
-        return res.status(400).send({
-            message: "admin content can not be empty"
-        });
+// Sign up an Admin { admin info => admin info ,token }
+const register = async function (req, res) {
+    const admin = new Admin(req.body);
+    try {
+        const token = await admin.generateAuthToken();
+        admin.tokens.push({token});
+        await admin.save();
+        res.status(201).send({admin, token});
+    } catch (error) {
+        res.status(400).send();
     }
-
-    // Create a admin
-    const admin = new Admin({
-        username: req.body.username || "Untitled Admin", 
-        email : req.body.email,
-        password: req.body.password
-    });
-
-    // Save admin in the database
-    admin.save()
-    .then(data => {
-        res.send(data);
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the admin."
-        });
-    });
 };
 
-// Retrieve and return all admin from the database. => GET
-exports.findAll = (req, res) => {
-    Admin.find()
-    .then(admins => {
-        res.send(admins);
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while retrieving admins."
-        });
-    });
-};
-
-// Find a single admin with a adminId => GET/ID
-exports.findOne = (req, res) => {
-    Admin.findById(req.params.adminId)
-    .then(admin => {
-        if(!admin) {
-            return res.status(404).send({
-                message: "admin not found with id " + req.params.adminId
-            });            
-        }
-        res.send(admin);
-    }).catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "admin not found with id " + req.params.adminId
-            });                
-        }
-        return res.status(500).send({
-            message: "Error retrieving admin with id " + req.params.adminId
-        });
-    });
-};
-
-// Update a admin identified by the adminId in the request => PUT/ID
-exports.update = (req, res) => {
-    // Validate Request
-    if(!req.body.username) {
-        return res.status(400).send({
-            message: "admin content can not be empty"
-        });
+// Sign in Admin { email,password => admin info,token }
+const login = async function (req, res)  {
+    try {
+        const admin = await Admin.findByCredentials(req.body.email, req.body.password);
+        const token = await admin.generateAuthToken();
+        admin.tokens.push({token});
+        await admin.updateOne({tokens: admin.tokens});
+        res.status(200).send({admin, token});
+    } catch (error) {
+        res.status(400).send({error: 'Unable to login'});
     }
-
-    // Find admin and update it with the request body
-    Admin.findByIdAndUpdate(req.params.adminId, {
-        username: req.body.username || "Untitled admin", 
-        email : req.body.email,
-        password: req.body.password
-    }, {new: true})
-    .then(admin => {
-        if(!admin) {
-            return res.status(404).send({
-                message: "admin not found with id " + req.params.adminId
-            });
-        }
-        res.send(admin);
-    }).catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "admin not found with id " + req.params.adminId
-            });                
-        }
-        return res.status(500).send({
-            message: "Error updating admin with id " + req.params.adminId
-        });
-    });
 };
 
-// Delete a admin with the specified adminId in the request => DELETE/ID
-exports.delete = (req, res) => {
-    Admin.findByIdAndRemove(req.params.adminId)
-    .then(admin => {
-        if(!admin) {
-            return res.status(404).send({
-                message: "admin not found with id " + req.params.adminId
-            });
-        }
-        res.send({message: "admin deleted successfully!"});
-    }).catch(err => {
-        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
-            return res.status(404).send({
-                message: "admin not found with id " + req.params.adminId
-            });                
-        }
-        return res.status(500).send({
-            message: "Could not delete admin with id " + req.params.adminId
-        });
-    });
-};
+
+module.exports = {register,login} ;
