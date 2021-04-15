@@ -15,11 +15,11 @@ const nodemailer = require('nodemailer')
 exports.register = async (req,res,next)=>{
   
    
-    const {nom,prenom,email,cin,password}=req.body;
+    const {nom,prenom,email,cin,role,password}=req.body;
     const user = await User.findOne({email,cin});
     if(user)
     return res.status(403).json({error:{message:'Email or cin already in use!'}});
-    const newUser = new User({nom,prenom,email,cin,password});
+    const newUser = new User({nom,prenom,email,cin,role,password});
     await newUser.save();
 res.status(200).json({message:'success'});
 
@@ -53,6 +53,7 @@ getSignedToken = user => {
         prenom:user.prenom,
         email: user.email,
         password: user.password,
+        role: user.role,
         cin: user.cin
     }, SECRET_KEY, { expiresIn: '1h' });
 };

@@ -15,6 +15,10 @@ email:{
 
 },
 cin:{type:Number , required:true},
+role:{type:String, required:true,
+    enum:['user','admin','enseignant'],
+    default:'user'
+},
 password:{type:String , required:[true,'please confirm your password'],
 validator:function(el){
   return el === this.password;

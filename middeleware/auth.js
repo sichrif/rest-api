@@ -2,19 +2,28 @@ const jwt = require('jsonwebtoken');
 
 const { SECRET_KEY } = require('./../config');
 
-module.exports = (req, res, next) => {
-    try {
-      const token = req.headers.authorization.split(' ')[1];
-      const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-      const userId = decodedToken.userId;
-      if (req.body.userId && req.body.userId !== userId) {
-        throw 'Invalid user ID';
-      } else {
-        next();
-      }
-    } catch {
-      res.status(401).json({
-        error: new Error('Invalid request!')
-      });
-    }
-  };
+function verifiedFunction(req, res, next) {
+  // Gather the jwt access token from the request header
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token == null) return res.sendStatus(401); // if there isn't any token
+
+  try {
+    const verified = jwt.verify(token, process.env.SECRET_KEY );
+    req.user = verified;
+    return next();
+  } catch (error) {
+    return res.status(400).send('Invalid token');
+  }
+}
+
+function checkAdmin(req, res, next) {
+  // Gather the jwt access token from the request header
+
+  if (req.user.role === 'admin') {
+    return next();
+  }
+  return res.status(401).send('Unauthorized');
+}
+
+module.exports = { verifiedFunction, checkAdmin };
