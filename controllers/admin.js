@@ -1,10 +1,10 @@
 const Admin = require('../models/admin.js');
 const bcrypt = require('bcrypt');
-const ComingEvent = require('../../models/coming-event-model');
+const ComingEvent = require('../models/evenement');
 const User = require('./../models/user');
 
 
-// Sign up an Admin { admin info => admin info ,token }
+
 const register = async function (req, res) {
     const admin = new Admin(req.body);
     try {
@@ -17,7 +17,7 @@ const register = async function (req, res) {
     }
 };
 
-// Sign in Admin { email,password => admin info,token }
+
 const login = async function (req, res)  {
     try {
         const admin = await Admin.findByCredentials(req.body.email, req.body.password);
@@ -83,8 +83,26 @@ const updateEvent = async function (req, res) {
     }
 }
 
+const adduser = async function (req,res) {
+    const clientID = new user(req.body);
+    try {
+        await User.save();
+        res.status(200).send();
+    }catch(e){
+        res.status(400).send();
+    }
+}
 
-module.exports = {register,login,addEvent, getOneEvent, getManyEvents, deleteEvent , updateEvent} ;
+const getAlluser = async function(req,res){
+    try{
+        const user = await User.find();
+        res.status(200).send(users);
+    }catch (e) {
+        res.status(500).send();
+    }
+}
+
+module.exports = {register,login,addEvent, getOneEvent, getManyEvents, deleteEvent , updateEvent, adduser , getAlluser} ;
 
 
 
