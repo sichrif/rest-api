@@ -1,9 +1,8 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const {MONGODB} = require('./config');
+const { MONGODB } = require('./config');
 const userRoutes = require('./routes/user');
-const adminRoutes= require('./routes/admin')
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const AppError = require('./utils/appError')
@@ -13,7 +12,6 @@ const swaggerDocument = require('./routes/swagger.json')
 
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
-app.use('/api/users', adminRoutes);
 
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

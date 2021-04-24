@@ -5,16 +5,9 @@ const {SECRET_KEY}=require('./../config');
 const bcrypt =require('bcrypt');
 const crypto = require('crypto');
 const user = require('./../models/user');
-// const sendEmail=require('./../emails/account');
 const nodemailer = require('nodemailer')
 
-
-
-
-
 exports.register = async (req,res,next)=>{
-  
-   
     const {nom,prenom,email,cin,role,password}=req.body;
     const user = await User.findOne({email,cin});
     if(user)
@@ -25,18 +18,11 @@ res.status(200).json({message:'success'});
 
 };
 
-
-
-
 exports.login=async(req,res,next)=>{
     const {email,password}=req.body;
     const user =await User.findOne({email});
     const isValid = await bcrypt.compare(password, user.password);
     // password then hash
-    
-    console.log(password);
-    console.log(user.password);
-    console.log(isValid);
     
     if(!user)
     return res.status(403).json({error:{message:'invalid email/password'}});
@@ -58,14 +44,7 @@ getSignedToken = user => {
     }, SECRET_KEY, { expiresIn: '1h' });
 };
 
-
-
-
 // ===PASSWORD RECOVER AND RESET
-
-
-
-
 
 exports.forgotPassword = async(req,res,next)=>{
     const user = await User.findOne({email:req.body.email});
