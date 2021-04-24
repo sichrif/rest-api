@@ -11,11 +11,37 @@ const swaggerUi = require('swagger-ui-express') // To bind express with express 
 const swaggerDocument = require('./routes/swagger.json')
 
 
+const multer = require('multer');
+const upload = multer({
+
+    dest:'image'
+})
+
+app.post('/upload',upload.single('images'),(req,res)=>{
+
+    res.send()
+
+
+})
+
+
+
+
+
+
+
+
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
 app.use('/api/users', adminRoutes);
 
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
+
+
+
+
 
 // app.listen(3300)
 mongoose.connect(MONGODB, {useNewUrlParser: true})

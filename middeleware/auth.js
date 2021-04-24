@@ -1,29 +1,23 @@
 const jwt = require('jsonwebtoken');
+const Admin = require('../models/admin');
 
-const { SECRET_KEY } = require('./../config');
 
-function verifiedFunction(req, res, next) {
-  
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
-  if (token == null) return res.sendStatus(401); // if there isn't any token
 
-  try {
-    const verified = jwt.verify(token, process.env.SECRET_KEY );
-    req.user = verified;
-    return next();
-  } catch (error) {
-    return res.status(400).send('Invalid token');
-  }
+const Admin = async function (req, res, next) {
+    try {
+        const token = req.header('Authorization');
+        const decode = await jwt.verify(token, process.env.SECRET_KEY);
+        const admin = await Admin.findOne({_id: decode.id, 'tokens.token': token});
+        if (admin){
+            req.admin = admin;
+            req.token = token;
+            next();
+        }else {
+            throw new Error();
+        }
+    }catch (error) {
+        res.status(401).send({error : 'please authenticate as admin'});
+    }
 }
 
-function checkAdmin(req, res, next) {
-  // Gather the jwt access token from the request header
-
-  if (req.user.role === 'admin') {
-    return next();
-  }
-  return res.status(401).send('Unauthorized');
-}
-
-module.exports = { verifiedFunction, checkAdmin };
+module.exports = {authAdmin};

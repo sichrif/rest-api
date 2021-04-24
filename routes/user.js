@@ -11,6 +11,9 @@ router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.post('/forgotPassword/', userController.forgotPassword);
 router.get('/resetPassword/:token', userController.resetPassword);
+router.post('/users',(req,res)=>{
+    res.send()
+})
 
 
 

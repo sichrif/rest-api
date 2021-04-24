@@ -1,7 +1,10 @@
-const Admin = require('../models/admin.js');
+const Admin = require('../models/admin.model');
 const bcrypt = require('bcrypt');
-const ComingEvent = require('../models/evenement');
-const User = require('./../models/user');
+const ComingEvent = require('../models/evenement.model');
+const User = require('../models/user');
+
+
+
 
 
 
