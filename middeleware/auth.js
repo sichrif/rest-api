@@ -15,18 +15,13 @@ function verifiedFunction(req, res, next) {
   }
 }
 
-function checkAdmin(req, res, next) {
-  if (req.user.role === 'admin') {
-    return next();
-  }
-  return res.status(401).send('Unauthorized');
-}
-
-function checkTeacher(req, res, next) {
-    if (req.user.role === 'teacher') {
-        return next();
+function authRole(role) {
+    return (req, res, next) => {
+      if (req.user.role != role) {
+        return res.status(401).send('Not allowed with current privilege');
+      }
+      next();
     }
-    return res.status(401).send('Unauthorized');
 }
 
-module.exports = { verifiedFunction, checkAdmin, checkTeacher };
+module.exports = { verifiedFunction, authRole };
