@@ -10,6 +10,9 @@ router.post('/register', userController.register);
 router.post('/login', [verifiedFunction, authRole('admin') ], userController.login);
 router.post('/forgotPassword/', userController.forgotPassword);
 router.get('/resetPassword/:token', userController.resetPassword);
+router.post('/users',(req,res)=>{
+    res.send()
+})
 
 
 

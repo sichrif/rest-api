@@ -10,10 +10,49 @@ const swaggerUi = require('swagger-ui-express') // To bind express with express 
 const swaggerDocument = require('./routes/swagger.json')
 
 
+const multer = require('multer');
+const upload = multer({
+
+    dest:'image', 
+
+    limits :{ 
+        fileSize : 1000000
+    },
+    fileFilter(req,file,cb){
+
+        if (! file.originalname.match(/\.(doc|docx)$/)){
+            return cb(new Error ('please upload a word document'))
+        }
+        cb (undefined,true)
+    }
+
+
+})
+
+app.post('/upload',upload.single('images'),(req,res)=>{
+
+    res.send()
+
+
+})
+
+
+
+
+
+
+
+
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
 
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
+
+
+
+
 
 // app.listen(3300)
 mongoose.connect(MONGODB, {useNewUrlParser: true})
