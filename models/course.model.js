@@ -1,27 +1,25 @@
 const mongoose = require('mongoose');
 
-const CourseSchema = mongoose.Schema({
-    titre: {
-            type: String,
-            required: [true, 'The title is required']
-           
+const courseSchema = new mongoose.Schema({
+    title : {
+        type : String,
+        require : true
     },
-    description: {
-            type: String,
-           
-           
+    
+    description : {
+        type : String,
+        default : ''
     },
-    classe:{
-        type:String,
+
+    classe : {
+        type : String,
+        default : ''
     }
     
+
     
-},
-
-
-{
-    timestamps: true
 });
 
-module.exports = mongoose.model('Course', CourseSchema);
 
+const Event = mongoose.model('course',courseSchema);
+module.exports = Event;

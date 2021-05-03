@@ -5,8 +5,9 @@ const manageSpecialite = require('../controllers/specialite.controller');
 
 const router = new express.Router();
 
+
 // Add a coming specialite
-router.post('/specialite', manageSpecialite.addSPECIALITE);
+router.post('/addSPECIALITE', manageSpecialite.addSPECIALITE);
 
 // Add a coming specialite
 router.post('/specialite/update/:id', manageSpecialite.updateSPECIALITE);

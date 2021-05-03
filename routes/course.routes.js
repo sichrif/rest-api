@@ -1,18 +1,28 @@
-module.exports = (app) => {
-    const courses = require('../controllers/course.controller.js');
+const express = require('express');
+
+const manageCourse = require('../controllers/course.controller');
 
 
-    app.post('/courses', courses.create);
+const router = new express.Router();
 
-    
-    app.get('/courses', courses.findAll);
 
-   
-    app.get('/courses/:courseId', courses.findOne);
+// Add a coming specialite
+router.post('/addcours', manageCourse.addcours);
 
-    
-    app.put('/courses/:courseId', courses.update);
+// Add a coming specialite
+router.post('/getOnecours', manageCourse.getOnecours);
 
-    
-    app.delete('/courses/:courseId', courses.delete);
-}
+// get one coming specialite
+router.get('/getManycours', manageCourse.getManycours);
+
+// get many coming specialite
+// /events  => get all specialite
+router.get('/ deletecours', manageCourse. deletecours);
+
+// delete coming event
+router.delete('/ updatecours', manageCourse. updatecours);
+
+
+module.exports = router;
+
+

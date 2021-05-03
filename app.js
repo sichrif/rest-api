@@ -3,6 +3,12 @@ const app = express();
 const mongoose = require('mongoose');
 const { MONGODB } = require('./config');
 const userRoutes = require('./routes/user');
+const eventRoutes = require('./routes/event.routes');
+const specRoutes = require('./routes/specialite.routes')
+const courseRoutes = require('./routes/course.routes')
+
+
+
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const AppError = require('./utils/appError')
@@ -45,6 +51,10 @@ app.post('/upload',upload.single('images'),(req,res)=>{
 
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
+app.use('/api/users', eventRoutes);
+app.use('/api/users', specRoutes);
+app.use('/api/users', courseRoutes);
+
 
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

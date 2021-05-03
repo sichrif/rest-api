@@ -5,15 +5,7 @@ const eventSchema = new mongoose.Schema({
         type : String,
         require : true
     },
-    start : {
-        type: Date,
-        required : true
-    },
-    end : {
-        type: Date,
-        required: true,
-       
-    },
+    
     description : {
         type : String,
         default : ''
@@ -24,5 +16,5 @@ const eventSchema = new mongoose.Schema({
 });
 
 
-const Event = mongoose.model('Event',eventSchema);
+const Event = mongoose.model('event',eventSchema);
 module.exports = Event;

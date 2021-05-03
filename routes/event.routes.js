@@ -6,20 +6,24 @@ const manageEventsController = require('../controllers/event.controller');
 const router = new express.Router();
 
 // Add a coming event
-router.post('/events', manageEventsController.addEvent);
+router.post('/addEvent', manageEventsController.addEvent);
 
 // Add a coming event
-router.post('/events/update/:id', manageEventsController.updateEvent);
+router.post('/updateEvent', manageEventsController.updateEvent);
+
+
+
+
 
 // get one coming event
-router.get('/events/:id', manageEventsController.getOneEvent);
+router.get('/getOneEvent', manageEventsController.getOneEvent);
 
 // get many coming events
 // /events  => get all events
-router.get('/events', manageEventsController.getManyEvents);
+router.get('/getManyEvents', manageEventsController.getManyEvents);
 
 // delete coming event
-router.delete('/events/:id', manageEventsController.deleteEvent);
+router.delete('/deleteEvent', manageEventsController.deleteEvent);
 
 
 module.exports = router;
