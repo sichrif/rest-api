@@ -20,8 +20,7 @@ router.get('/getManycours', manageCourse.getManycours);
 router.get('/ deletecours', manageCourse. deletecours);
 
 // delete coming event
-router.delete('/ updatecours', manageCourse. updatecours);
-
+router.post('/updatecours/:id', manageCourse.updatecours);
 
 module.exports = router;
 

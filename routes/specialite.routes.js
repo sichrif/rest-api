@@ -10,17 +10,17 @@ const router = new express.Router();
 router.post('/addSPECIALITE', manageSpecialite.addSPECIALITE);
 
 // Add a coming specialite
-router.post('/specialite/update/:id', manageSpecialite.updateSPECIALITE);
+router.post('/updateSPECIALITE/:id', manageSpecialite.updateSPECIALITE);
 
 // get one coming specialite
-router.get('/specialite/:id', manageSpecialite.getOneSPECIALITE);
+router.get('/getOneSPECIALITE/:id', manageSpecialite.getOneSPECIALITE);
 
 // get many coming specialite
 // /events  => get all specialite
-router.get('/specialite', manageSpecialite.getManySPECIALITE);
+router.get('/getManySPECIALITE', manageSpecialite.getManySPECIALITE);
 
 // delete coming event
-router.delete('/specialite/:id', manageSpecialite.deleteSPECIALITE);
+router.delete('/deleteSPECIALITE/:id', manageSpecialite.deleteSPECIALITE);
 
 
 module.exports = router;

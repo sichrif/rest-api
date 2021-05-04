@@ -9,21 +9,21 @@ const router = new express.Router();
 router.post('/addEvent', manageEventsController.addEvent);
 
 // Add a coming event
-router.post('/updateEvent', manageEventsController.updateEvent);
 
 
+router.post('/updateEvent/:id', manageEventsController.updateEvent);
 
 
 
 // get one coming event
-router.get('/getOneEvent', manageEventsController.getOneEvent);
+router.get('/getOneEvent/:id', manageEventsController.getOneEvent);
 
 // get many coming events
 // /events  => get all events
 router.get('/getManyEvents', manageEventsController.getManyEvents);
 
 // delete coming event
-router.delete('/deleteEvent', manageEventsController.deleteEvent);
+router.delete('/deleteEvent/:id', manageEventsController.deleteEvent);
 
 
 module.exports = router;

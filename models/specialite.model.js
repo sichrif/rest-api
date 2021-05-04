@@ -15,5 +15,5 @@ const specialiteSchema = new mongoose.Schema({
 });
 
 
-const Event = mongoose.model('Event',specialiteSchema);
-module.exports = Event;
+const special = mongoose.model('special',specialiteSchema);
+module.exports = special;
