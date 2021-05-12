@@ -6,12 +6,15 @@ const userRoutes = require('./routes/user');
 const eventRoutes = require('./routes/event.routes');
 const specRoutes = require('./routes/specialite.routes')
 const courseRoutes = require('./routes/course.routes')
+const CSIRoutes = require('./routes/masterCSI.routes')
+const CPSRoutes = require('./routes/masterCPS.routes')
+
 
 
 
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
-const AppError = require('./utils/appError')
+
 const swaggerUi = require('swagger-ui-express') // To bind express with express and show ui provided by swagger js-doc
 const swaggerDocument = require('./routes/swagger.json')
 
@@ -54,6 +57,9 @@ app.use('/api/users', userRoutes);
 app.use('/api/users', eventRoutes);
 app.use('/api/users', specRoutes);
 app.use('/api/users', courseRoutes);
+app.use('/api/users', CSIRoutes);
+app.use('/api/users', CPSRoutes);
+
 
 
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

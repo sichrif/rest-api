@@ -31,8 +31,8 @@ const getManycours = async function (req, res) {
 
 const deletecours = async function (req, res) {
     try {
-        const deletedSPECIALITE = await course.findByIdAndDelete(req.params.id);
-        deletedSPECIALITE ? res.status(200).send() : res.status(404).send();
+        const deletecours  = await course.findByIdAndDelete(req.params.id);
+        deletecours  ? res.status(200).send() : res.status(404).send();
     } catch (error) {
         res.status(400).send();
     }
@@ -41,8 +41,8 @@ const deletecours = async function (req, res) {
 const updatecours = async function (req, res) {
     try {
         console.log(req.body);
-        const updatedSPECIALITE = await course.findByIdAndUpdate(req.params.id, req.body);
-        const status = updateSPECIALITE ? 200 : 404;
+        const updatecours = await course.findByIdAndUpdate(req.params.id, req.body);
+        const status = updatecours ? 200 : 404;
         res.status(status).send();
     }catch (e) {
         res.status(400).send();

@@ -10,14 +10,14 @@ const router = new express.Router();
 router.post('/addcours', manageCourse.addcours);
 
 // Add a coming specialite
-router.post('/getOnecours', manageCourse.getOnecours);
+router.post('/getOnecours/:id', manageCourse.getOnecours);
 
 // get one coming specialite
 router.get('/getManycours', manageCourse.getManycours);
 
 // get many coming specialite
 // /events  => get all specialite
-router.get('/ deletecours', manageCourse. deletecours);
+router.delete('/deletecours/:id', manageCourse. deletecours);
 
 // delete coming event
 router.post('/updatecours/:id', manageCourse.updatecours);
