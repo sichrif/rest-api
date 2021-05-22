@@ -9,6 +9,7 @@ const courseRoutes = require('./routes/course.routes')
 const CSIRoutes = require('./routes/masterCSI.routes')
 const CPSRoutes = require('./routes/masterCPS.routes')
 const TRTRoutes = require('./routes/masterTRT.routes')
+const accountRoutes = require('./routes/account.routes')
 
 
 
@@ -61,6 +62,7 @@ app.use('/api/users', courseRoutes);
 app.use('/api/users', CSIRoutes);
 app.use('/api/users', CPSRoutes);
 app.use('/api/users', TRTRoutes);
+app.use('/api/users', accountRoutes);
 
 
 

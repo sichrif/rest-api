@@ -2,18 +2,27 @@ const jwt = require('jsonwebtoken');
 const { SECRET_key } = require('../config');
 
 
-function verifiedFunction(req, res, next) {
-  
-  const token = req.headers.authorization;
-  if (token == null) return res.sendStatus(401); // if there isn't any token
-  try {
-      const verified = jwt.verify(token, SECRET_key);
-      req.user = verified;
-      return next();
-  } catch (error) {
-      return res.status(400).send('Invalid token');
+
+
+const authenticateJWT = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader) {
+      const token = authHeader.split(' ')[1];
+
+      jwt.verify(token, SECRET_key, (err, user) => {
+          if (err) {
+              return res.sendStatus(403);
+          }
+
+          req.user = user;
+          next();
+      });
+  } else {
+      res.sendStatus(401);
   }
-}
+};
+
 
 function authRole(role) {
     return (req, res, next) => {
@@ -24,4 +33,4 @@ function authRole(role) {
     }
 }
 
-module.exports = { verifiedFunction, authRole };
+module.exports = { authenticateJWT, authRole };

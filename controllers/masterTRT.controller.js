@@ -5,9 +5,14 @@ const addmastertrt = async function (req, res) {
         const trt = new mastertrt (req.body);
         await trt.save();
         res.status(200).send();
+        
+
+
     } catch (error) {
         res.status(400).send({error: error.toString()});
     }
+
+
 }
 
 const getOnemastertrt = async function (req, res) {

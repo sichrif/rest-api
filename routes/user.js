@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { verifiedFunction, authRole } = require('../middeleware/auth');
+const { verifiedFunction, authRole, authadmin } = require('../middeleware/auth');
 const userController = require('./../controllers/user');
 
 
