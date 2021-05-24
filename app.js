@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const { MONGODB } = require('./config');
 const userRoutes = require('./routes/user');
+const UserRoutes = require ('./routes/user')
 const eventRoutes = require('./routes/event.routes');
 const specRoutes = require('./routes/specialite.routes')
 const courseRoutes = require('./routes/course.routes')
@@ -10,6 +11,9 @@ const CSIRoutes = require('./routes/masterCSI.routes')
 const CPSRoutes = require('./routes/masterCPS.routes')
 const TRTRoutes = require('./routes/masterTRT.routes')
 const accountRoutes = require('./routes/account.routes')
+const etudiantRoutes = require('./routes/etudiant.routes')
+const resultatRoutes = require('./routes/resultat.routes')
+
 
 
 
@@ -56,6 +60,7 @@ app.post('/upload',upload.single('images'),(req,res)=>{
 
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
+app.use('/api/users', UserRoutes);
 app.use('/api/users', eventRoutes);
 app.use('/api/users', specRoutes);
 app.use('/api/users', courseRoutes);
@@ -63,6 +68,8 @@ app.use('/api/users', CSIRoutes);
 app.use('/api/users', CPSRoutes);
 app.use('/api/users', TRTRoutes);
 app.use('/api/users', accountRoutes);
+app.use('/api/users', etudiantRoutes);
+app.use('/api/users', resultatRoutes);
 
 
 

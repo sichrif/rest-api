@@ -5,7 +5,8 @@ const {SECRET_KEY}=require('./../config');
 const bcrypt =require('bcrypt');
 const crypto = require('crypto');
 const user = require('./../models/user');
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
+
 
 exports.register = async (req,res,next)=>{
     const {nom,prenom,email,cin,role,password}=req.body;
@@ -17,6 +18,8 @@ exports.register = async (req,res,next)=>{
 res.status(200).json({message:'success'});
 
 };
+
+
 
 exports.login=async(req,res,next)=>{
     const {email,password}=req.body;
@@ -43,6 +46,26 @@ getSignedToken = user => {
         cin: user.cin
     }, SECRET_KEY, { expiresIn: '1h' });
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ===PASSWORD RECOVER AND RESET
 
@@ -149,5 +172,3 @@ function makeid(length) {
    }
    return result.join('');
 }
-
-
