@@ -47,9 +47,44 @@ getSignedToken = user => {
     }, SECRET_KEY, { expiresIn: '1h' });
 };
 
+exports.getOneuser = async function (req, res,next){
+    try {
+        const user = await User.findById(req.params.id);
+        user ? res.status(200).send(user) : res.status(404).send();
+    } catch (error) {
+        res.status(400).send();
+    }
+}
 
+exports.getManyuser = async function (req, res,next) {
+    try {
+        const limit = req.query.limit ? +req.query.limit : undefined;
+        const events = await User.find().limit(limit).sort({createdAt: 'desc'});
+        res.status(200).send(events);
+    } catch (error) {
+        res.status(400).send();
+    }
+}
 
+exports.deleteuser = async function (req, res,next) {
+    try {
+        const deleteuser  = await User.findByIdAndDelete(req.params.id);
+        deleteuser  ? res.status(200).send() : res.status(404).send();
+    } catch (error) {
+        res.status(400).send();
+    }
+}
 
+exports.updateuser = async function (req, res,next) {
+    try {
+        console.log(req.body);
+        const updateuser = await User.findByIdAndUpdate(req.params.id, req.body);
+        const status = updateuser ? 200 : 404;
+        res.status(status).send();
+    }catch (e) {
+        res.status(400).send();
+    }
+}
 
 
 
