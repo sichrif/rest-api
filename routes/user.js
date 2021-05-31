@@ -16,7 +16,8 @@ router.post('/updateuser/:id',authenticateJWT,userController.updateuser);
 router.get('/getOneuser/:id', authenticateJWT,userController.getOneuser);
 router.get('/getManyuser', authenticateJWT,userController.getManyuser);
 router.delete('/deleteuser/:id', authenticateJWT,userController.deleteuser);
-
+router.get('/getalluser/',authenticateJWT,userController.getalluser);
+router.get('/getallensegn/',authenticateJWT,userController.getallensegn);
 
 
 

@@ -14,7 +14,9 @@ const accountRoutes = require('./routes/account.routes')
 const etudiantRoutes = require('./routes/etudiant.routes')
 const resultatRoutes = require('./routes/resultat.routes')
 
+var cors = require('cors')
 
+app.use(cors())
 
 
 

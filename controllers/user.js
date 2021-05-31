@@ -33,7 +33,7 @@ exports.login=async(req,res,next)=>{
     if(!isValid)
         return res.status(403).json({error:{message:'invalid email/password'}});
     const token = user.generateAuthToken();
-    res.status(200).json({token});
+    res.status(200).json({token,user});
 };
 
 getSignedToken = user => {
@@ -65,7 +65,25 @@ exports.getManyuser = async function (req, res,next) {
         res.status(400).send();
     }
 }
+exports.getalluser = async function (req, res,next) {
+    try {
+      
+        const user =await User.find({role:"user"});
+                res.status(200).send(user);
+    } catch (error) {
+        res.status(400).send();
+    }
+}
 
+exports.getallensegn = async function (req, res,next) {
+    try {
+      
+        const user =await User.find({role:"enseignant"});
+                res.status(200).send(user);
+    } catch (error) {
+        res.status(400).send();
+    }
+}
 exports.deleteuser = async function (req, res,next) {
     try {
         const deleteuser  = await User.findByIdAndDelete(req.params.id);
