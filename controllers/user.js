@@ -8,8 +8,9 @@ const user = require('./../models/user');
 const nodemailer = require('nodemailer');
 
 
-exports.register = async (req,res,next)=>{
+exports.register = async (req,res) => {
     const {nom,prenom,email,cin,role,password}=req.body;
+
     const user = await User.findOne({email,cin});
     if(user)
         return res.status(403).json({error:{message:'Email or cin already in use!'}});
@@ -92,7 +93,7 @@ exports.deleteuser = async function (req, res,next) {
 
 exports.updateuser = async function (req, res,next) {
     try {
-        console.log(req.body);
+        req.body.image = req.file.path;
         const updateuser = await User.findByIdAndUpdate(req.params.id, req.body);
         const status = updateuser ? 200 : 404;
         res.status(status).send();

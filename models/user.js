@@ -32,6 +32,10 @@ const userSchema = new Schema ({
             'enseignant'
         ]
     },
+    image: {
+        type: String,
+        default: '',
+    },
     password: {
         type:String,
         required: [true,'please confirm your password'],
@@ -58,7 +62,6 @@ userSchema.pre('save',async function(next){
 });
 
 userSchema.methods.generateAuthToken = function () {
-    console.log(SECRET_key);
     return jwt.sign({ nom: this.nom, prenom: this.prenom, role: this.role }, SECRET_key);
 }
 
@@ -71,7 +74,7 @@ userSchema.methods.isPasswordValid = async function(value){
 };
 
 userSchema.methods.createpasswordresettoken = function() {
-   const resettoken =crypto.randomBytes(32).toString('hex');
+   const resettoken = crypto.randomBytes(32).toString('hex');
    crypto.createHash('sha256').update(resettoken).digest('hex');
     this.passwordresettoken= resettoken;
     // was generating pass twice
