@@ -12,11 +12,10 @@ exports.register = async (req,res,next)=>{
     const {nom,prenom,email,cin,role,password}=req.body;
     const user = await User.findOne({email,cin});
     if(user)
-    return res.status(403).json({error:{message:'Email or cin already in use!'}});
+        return res.status(403).json({error:{message:'Email or cin already in use!'}});
     const newUser = new User({nom,prenom,email,cin,role,password});
     await newUser.save();
-res.status(200).json({message:'success'});
-
+    res.status(200).json({message:'success'});
 };
 
 

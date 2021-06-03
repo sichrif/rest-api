@@ -1,12 +1,15 @@
 const ComingEvent = require('../models/evenement.model');
 
+
+
 const addEvent = async function (req, res) {
     try {
+        req.body.file = req.file.path;
         const comingEvent = new ComingEvent(req.body);
         await comingEvent.save();
         res.status(200).send();
     } catch (error) {
-        res.status(400).send({error: error.toString()});
+        res.status(400).send({ error: error.toString() });
     }
 }
 
@@ -40,7 +43,7 @@ const deleteEvent = async function (req, res) {
 
 const updateEvent = async function (req, res) {
     try {
-        console.log(req.body);
+        req.body.file = req.file.path;
         const updatedEvent = await ComingEvent.findByIdAndUpdate(req.params.id, req.body);
         const status = updatedEvent ? 200 : 404;
         res.status(status).send();

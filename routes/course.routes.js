@@ -21,7 +21,7 @@ const router = new express.Router();
 
 
 // Add a coming specialite
-router.post('/addcours', upload.single('cour'),manageCourse.addcours);
+router.post('/addcours', authenticateJWT,upload.single('cour'),manageCourse.addcours);
 
 // Add a coming specialite
 router.post('/getOnecours/:id', authenticateJWT,manageCourse.getOnecours);
@@ -34,7 +34,7 @@ router.get('/getManycours',authenticateJWT, manageCourse.getManycours);
 router.delete('/deletecours/:id', authenticateJWT,manageCourse. deletecours);
 
 // delete coming event
-router.post('/updatecours/:id', upload.single('cour'), manageCourse.updatecours);
+router.post('/updatecours/:id', authenticateJWT,upload.single('cour'), manageCourse.updatecours);
 
 module.exports = router;
 
