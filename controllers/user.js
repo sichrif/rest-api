@@ -18,8 +18,6 @@ exports.register = async (req,res,next)=>{
     res.status(200).json({message:'success'});
 };
 
-
-
 exports.login=async(req,res,next)=>{
     const {email,password}=req.body;
     const user =await User.findOne({email});

@@ -8,10 +8,14 @@ const resultatSchema = new mongoose.Schema({
         default : ''
     },
 
+    file:{
+        type : String,
+        default : ''
+    },
+
     classe:{
       type : String, 
       default : ''
-
     }
     
 

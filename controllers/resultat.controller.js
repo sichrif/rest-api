@@ -2,6 +2,7 @@ const result = require('../models/resultat.model');
 
 const addresult = async function (req, res) {
     try {
+        req.body.file = req.file.path;
         const notes = new result (req.body);
         await notes.save();
         res.status(200).send();
@@ -40,7 +41,7 @@ const deleteresult = async function (req, res) {
 
 const updateresult = async function (req, res) {
     try {
-        console.log(req.body);
+        req.body.file = req.file.path;
         const updateresult = await result.findByIdAndUpdate(req.params.id, req.body);
         const status = updateresult ? 200 : 404;
         res.status(status).send();
