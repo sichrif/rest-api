@@ -1,13 +1,12 @@
 const mastertrt = require('../models/masterTRT.model');
+const { calculScore } = require('../utilities/mastereCalculFunctions')
 
 const addmastertrt = async function (req, res) {
     try {
-        const trt = new mastertrt (req.body);
+        req.body.Score = calculScore(req.body);
+        const trt = new mastertrt(req.body);
         await trt.save();
         res.status(200).send();
-        
-
-
     } catch (error) {
         res.status(400).send({error: error.toString()});
     }
@@ -45,7 +44,7 @@ const deletemastertrt = async function (req, res) {
 
 const updatemastertrt = async function (req, res) {
     try {
-        console.log(req.body);
+        req.body.Score = calculScore(req.body);
         const updatemastertrt = await mastertrt.findByIdAndUpdate(req.params.id, req.body);
         const status = updatemastertrt ? 200 : 404;
         res.status(status).send();
@@ -54,4 +53,10 @@ const updatemastertrt = async function (req, res) {
     }
 }
 
-module.exports = {addmastertrt  , getOnemastertrt , getManymastertrt, deletemastertrt , updatemastertrt}
+module.exports = {
+    addmastertrt,
+    getOnemastertrt,
+    getManymastertrt,
+    deletemastertrt,
+    updatemastertrt
+}
