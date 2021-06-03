@@ -2,7 +2,8 @@ const course = require('../models/course.model');
 
 const addcours = async function (req, res) {
     try {
-        const cours = new course (req.body);
+        const cours = new course(req.body);
+        cours.path = req.file.path;
         await cours.save();
         res.status(200).send();
     } catch (error) {
@@ -40,7 +41,7 @@ const deletecours = async function (req, res) {
 
 const updatecours = async function (req, res) {
     try {
-        console.log(req.body);
+        req.body.path = req.file.path;
         const updatecours = await course.findByIdAndUpdate(req.params.id, req.body);
         const status = updatecours ? 200 : 404;
         res.status(status).send();
@@ -49,4 +50,10 @@ const updatecours = async function (req, res) {
     }
 }
 
-module.exports = {addcours ,  getOnecours,getManycours, deletecours , updatecours}
+module.exports = {
+    addcours,
+    getOnecours,
+    getManycours,
+    deletecours,
+    updatecours
+}

@@ -13,45 +13,15 @@ const TRTRoutes = require('./routes/masterTRT.routes')
 const accountRoutes = require('./routes/account.routes')
 const etudiantRoutes = require('./routes/etudiant.routes')
 const resultatRoutes = require('./routes/resultat.routes')
-
 var cors = require('cors')
+app.use("/uploads", express.static("uploads"));
 
 app.use(cors())
 
-
-
 const bodyParser = require('body-parser');
-const bcrypt = require('bcryptjs');
-
 const swaggerUi = require('swagger-ui-express') // To bind express with express and show ui provided by swagger js-doc
 const swaggerDocument = require('./routes/swagger.json')
 
-
-const multer = require('multer');
-const upload = multer({
-
-    dest:'image', 
-
-    limits :{ 
-        fileSize : 1000000
-    },
-    fileFilter(req,file,cb){
-
-        if (! file.originalname.match(/\.(doc|docx)$/)){
-            return cb(new Error ('please upload a word document'))
-        }
-        cb (undefined,true)
-    }
-
-
-})
-
-app.post('/upload',upload.single('images'),(req,res)=>{
-
-    res.send()
-
-
-})
 
 
 
